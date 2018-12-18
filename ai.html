@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<script src="https://unpkg.com/ef.js/dist/ef.min.js"></script>
+<script>
+const { t, inform, exec, onNextRender } = ef
+
+const reply = (input) => {
+  switch(true) {
+    case /再见/.test(input):
+      return '再见我的朋友！'
+      break
+    case /(你|大家)好/.test(input):
+      return Math.random() > 0.5 ? '你好！' : '大家好！'
+      break
+    default:
+      return input.replace(/\?|？/ig, '！').replace(/吗/ig, Math.random() > 0.2 ? '' : '呀').replace(/你/ig, Math.random() > 0.5 ? '' : '我')
+  }
+}
+
+const line = class extends t`
+>p
+  .{{content}}
+` {
+  constructor(content) {
+    super({
+      $data: {
+        content
+      }
+    })
+  }
+}
+
+const main = new t`
+>div
+  +lines
+  >input#input
+    @keypress.13 = send:{{val}}
+    %value = {{val}}
+  >button
+    @click = send:{{val}}
+    .发送
+`({
+  lines: [new line('<< 你好我的朋友！')],
+  $methods: {
+    send ({value, state}) {
+      if (!value.trim()) return
+      inform()
+      state.lines.push(new line(`>> ${value}`), new line(`<< ${reply(value)}`))
+      state.$data.val = ''
+      onNextRender(() => state.$refs.input.focus)
+      exec()
+    }
+  }
+})
+
+main.$mount({target: document.body})
+</script>
+</body>
+</html>
