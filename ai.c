@@ -7,7 +7,9 @@
 #include <sys/poll.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <time.h>
 
+int malfunction = 0;
 size_t input_size = 0;
 char *input_string = NULL;
 
@@ -78,8 +80,41 @@ void idiot_logic() {
 		printf("%s！\n", input_string);
 }
 
-int main() {
+#define LEN_WORDS	72
+const char malfunction_words[][LEN_WORDS] = {
+	"I don't know how to help with that.",
+	"Hmmmm, something went wrong, please try again in a few seconds.",
+	"我好像没听明白",
+	"Please stand by...",
+	"Sorry, but err != nil",
+	"I cannot access the internet, check your router's connection",
+	"Whoops! I stepped in an interface{}",
+	"hhhhhhhhhhhhhh",
+	"我不懂你的意思//",
+	"能再说一遍吗？",
+	"什么？",
+	"emmmmm",
+	"Segmentation fault",
+	"Bus error",
+	"bnx2x: probe of 0001:14:51.4 failed with error -23333",
+	"嘿小朋友们大家好",
+	"哇",
+	"openssh.com reply 1"
+};
+
+void idiot_logic_malfunction() {
+	struct timespec ts;
+	clock_gettime(CLOCK_REALTIME, &ts);
+	srand(ts.tv_nsec);
+	int rnd = rand() % sizeof(malfunction_words) / LEN_WORDS;
+	puts(malfunction_words[rnd]);
+}
+
+int main(int argc, char **argv) {
 	signal(SIGINT, sigint_handler);
+
+	if (argv[1] && 0 == strcmp(argv[1], "114514"))
+		malfunction = 1;
 
 	input_string = malloc(0);
 	char buf[128];
@@ -100,7 +135,10 @@ int main() {
 
 		if (rc_poll == 0) {
 			if (input_size) {
-				idiot_logic();
+				if (malfunction)
+					idiot_logic_malfunction();
+				else
+					idiot_logic();
 				input_string = realloc(input_string, 0);
 				input_size = 0;
 				prompt();
