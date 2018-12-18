@@ -28,6 +28,7 @@ void sigint_handler(int sig) {
 	goodbye();
 }
 
+// AI 核心代码，估值一个亿
 void idiot_logic() {
 	if (input_string[0] == '\n') {
 		puts("喵？");
