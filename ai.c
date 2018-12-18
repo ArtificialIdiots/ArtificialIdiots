@@ -1,3 +1,5 @@
+// Windows users please compile in Cygwin/MingW/WSL
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,6 +30,18 @@ void sigint_handler(int sig) {
 	goodbye();
 }
 
+int begins_with(const char *s) {
+	size_t l = strlen(s);
+	if (l > input_size)
+		return 0;
+	return !memcmp(s, input_string, l);
+}
+
+void overwrite(const char *s) {
+	size_t l = strlen(s);
+	memcpy(input_string, s, l);
+}
+
 // AI 核心代码，估值一个亿
 void idiot_logic() {
 	if (input_string[0] == '\n') {
@@ -49,6 +63,12 @@ void idiot_logic() {
 	if (p)
 		*p = 0;
 
+	if (begins_with("你") || begins_with("您")) {
+		if (!begins_with("你好") && !begins_with("您好")){
+			overwrite("我");
+		}
+	}
+
 	char *e = strstr(input_string, "！");
 
 	if (e) {
@@ -62,7 +82,6 @@ int main() {
 	signal(SIGINT, sigint_handler);
 
 	input_string = malloc(0);
-	ssize_t ret = 0;
 	char buf[128];
 
 	fd_set_nonblocking(STDIN_FILENO);
@@ -71,6 +90,8 @@ int main() {
 		.fd = STDIN_FILENO,
 		.events = POLLIN
 	};
+
+	puts("你好，我的朋友！");
 
 	prompt();
 
