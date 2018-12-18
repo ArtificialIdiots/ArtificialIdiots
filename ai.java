@@ -1,13 +1,13 @@
-package net.tcdw.ai;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class ai {
+
     public static void main(String[] args) {
         while (true) {
             try {
-                readOnce();
+                人工智能();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.exit(1);
@@ -15,11 +15,15 @@ public class Main {
         }
     }
 
-    private static void readOnce() throws IOException {
+    private static void 人工智能() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("> ");
         String[] 修饰词语 = {"呀", "啊", "哇", ""};
         String 用户输入 = br.readLine().strip();
+        if (用户输入.length() <= 1) {
+            System.out.println(用户输入);
+            return;
+        }
         char 倒数第一 = 用户输入.charAt(用户输入.length() - 1);
         char 倒数第二 = 用户输入.charAt(用户输入.length() - 2);
         if (用户输入.substring(0, 2).equals("再见")) {
