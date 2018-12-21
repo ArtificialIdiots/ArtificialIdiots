@@ -31,6 +31,9 @@ push    $0
 call    read
 add     $0xc, %esp
 
+cmp     $3, %eax
+jle     idiot_logic
+
 // var1: read size
 mov     %eax, -8(%ebp)
 
