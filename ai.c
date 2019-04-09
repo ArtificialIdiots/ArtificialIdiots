@@ -51,6 +51,12 @@ void idiot_logic() {
 		return;
 	}
 
+	if (strstr(input_string, "996")) {
+		malfunction = 2;
+		printf("如果没有没有这么多加班，何来现在这么的财富？\n");
+		return;
+	}
+
 	if (strstr(input_string, "再见")) {
 		goodbye();
 	}
@@ -99,15 +105,37 @@ const char malfunction_words[][LEN_WORDS] = {
 	"bnx2x: probe of 0001:14:51.4 failed with error -23333",
 	"嘿小朋友们大家好",
 	"哇",
-	"openssh.com reply 1"
+	"openssh.com reply 1",
+
+};
+
+const char malfunction_words2[][LEN_WORDS] = {
+	// Someone's famous words
+	"时间是显性的，效率是隐性的",
+	"Go非常的显式，你们C++一点都不显式",
+	"2. 先不管了 √",
+	"我是一个爱才的人",
+	"我不纠结，不纠结",
+	"这是出于综合考虑",
+	"我觉得你大有可为",
+	"只要你不写出这样的代码就行了",
+	"为什么你们可以那么轻松而我就那么累呢",
+	"你们怎么忍心对我这么残忍",
+	"我不想把deadline压到你们头上",
+	"我这是为了你好"
 };
 
 void idiot_logic_malfunction() {
 	struct timespec ts;
 	clock_gettime(CLOCK_REALTIME, &ts);
 	srand(ts.tv_nsec);
-	int rnd = rand() % sizeof(malfunction_words) / LEN_WORDS;
-	puts(malfunction_words[rnd]);
+	if (malfunction == 1) {
+		int rnd = rand() % sizeof(malfunction_words) / LEN_WORDS;
+		puts(malfunction_words[rnd]);
+	} else {
+		int rnd = rand() % sizeof(malfunction_words2) / LEN_WORDS;
+		puts(malfunction_words2[rnd]);
+	}
 }
 
 int main(int argc, char **argv) {
