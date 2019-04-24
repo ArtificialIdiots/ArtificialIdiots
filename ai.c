@@ -128,7 +128,11 @@ const char malfunction_words2[][LEN_WORDS] = {
 	"啦啦我是一棵蔬菜",
 	"虽然我连git都不会用，但是我能让老板把你开了哦hhhhhh",
 	"就算我每天上班都摸鱼，也要让老板看到我坐在那里",
-	"抽烟怎么了？老子在楼下抽烟已经给你面子了"
+	"抽烟怎么了？老子在楼下抽烟已经给你面子了",
+
+	// cheers
+	"yse",
+	"mpw"
 };
 
 void idiot_logic_malfunction() {
